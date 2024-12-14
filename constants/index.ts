@@ -6,13 +6,13 @@ export const navLinks :{label: string; route: string; icon: IconName }[] = [
     icon: '/FaHome',
   },
   {
-    label: 'Feature 1',
-    route: '/features/feature1',
+    label: 'Health Calendar',
+    route: '/features/health-calendar',
     icon: '/FaStar',
   },  
   {
-    label: 'Feature 2',
-    route: '/',
+    label: 'Care Finder',
+    route: '/features/care-finder',
     icon: '/FaStar',
   },
   {
