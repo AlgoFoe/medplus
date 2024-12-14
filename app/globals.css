@@ -365,7 +365,7 @@
   }
 
   .sidebar-logo {
-    @apply flex items-center md:py-1;
+    @apply flex items-center md:py-1 h-auto;
   }
 
   .sidebar-nav {

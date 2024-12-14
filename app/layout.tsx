@@ -1,15 +1,14 @@
 import type { Metadata } from 'next'
-import { IBM_Plex_Sans } from 'next/font/google'
 import { Poppins } from "next/font/google";
 import { cn } from '@/lib/utils'
 import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 import { Providers } from '@/providers'
 
-const IBMPlex = IBM_Plex_Sans({
+const MyPoppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-  variable: '--font-ibm-plex',
+  variable: '--font-mypoppins',
 })
 
 export const metadata: Metadata = {
@@ -31,7 +30,7 @@ export default function RootLayout({
       signUpUrl='/sign-up'
     >
       <html lang="en" suppressHydrationWarning>
-        <body className={cn('font-IBMPlex antialiased', IBMPlex.variable)}>
+        <body className={cn('font-mypoppins antialiased', MyPoppins.variable)}>
         <Providers>
           {children}
         </Providers>

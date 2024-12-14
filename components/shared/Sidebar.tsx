@@ -7,9 +7,14 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { Button } from "../ui/button";
 import ThemeSwitch from "./ThemeSwitch";
-import { Poppins } from "next/font/google";
 
-import { BriefcaseMedical,House, Star, UserRound,Stethoscope } from "lucide-react";
+import {
+  BriefcaseMedical,
+  House,
+  Star,
+  UserRound,
+  Stethoscope,
+} from "lucide-react";
 
 const iconMap = {
   "/FaHome": <House />,
@@ -28,28 +33,31 @@ const Sidebar = () => {
         <div className="flex size-full flex-col gap-4">
           <Link href="/" className="sidebar-logo pl-5">
             <Image
-              src="/assets/images/logo.png"
+              src="/assets/images/logo-large.png"
               alt="logo"
               width={180}
-              height={28}
-            />
+              height={30}
+              />
           </Link>
+
           <nav className="sidebar-nav">
             <SignedIn>
               <ul className="sidebar-nav_elements">
                 {navLinks.slice(0, 6).map((link) => {
-                  const isActive = link.route == baseRoute
+                  const isActive = link.route == baseRoute;
                   return (
                     <li
                       key={link.route}
                       className={`sidebar-nav_element group ${
-                        isActive
-                          ? "bg-blue text-white"
-                          : "text-gray-700"
+                        isActive ? "bg-blue text-white" : "text-gray-700"
                       }`}
                     >
                       <Link className="sidebar-link" href={link.route}>
-                        <span className={`sidebar-icon ${isActive && "brightness-200"}`}>
+                        <span
+                          className={`sidebar-icon ${
+                            isActive && "brightness-200"
+                          }`}
+                        >
                           {iconMap[link.icon]}
                         </span>
                         <span>{link.label}</span>
@@ -60,18 +68,20 @@ const Sidebar = () => {
               </ul>
               <ul className="sidebar-nav_elements">
                 {navLinks.slice(6).map((link) => {
-                  const isActive = link.route == pathname
+                  const isActive = link.route == pathname;
                   return (
                     <li
                       key={link.route}
                       className={`sidebar-nav_element group ${
-                        isActive
-                          ? "bg-blue text-white"
-                          : "text-gray-700"
+                        isActive ? "bg-blue text-white" : "text-gray-700"
                       }`}
                     >
                       <Link className="sidebar-link" href={link.route}>
-                        <span className={`sidebar-icon ${isActive && "brightness-200"}`}>
+                        <span
+                          className={`sidebar-icon ${
+                            isActive && "brightness-200"
+                          }`}
+                        >
                           {iconMap[link.icon]}
                         </span>
                         <span>{link.label}</span>
@@ -84,16 +94,16 @@ const Sidebar = () => {
                     showName
                     appearance={{
                       elements: {
-                        userButtonBox:{
-                          paddingRight: '125px',
-                          whiteSpace: 'nowrap'
+                        userButtonBox: {
+                          paddingRight: "125px",
+                          whiteSpace: "nowrap",
                         },
                         userButtonAvatarBox: {
                           width: "1.4rem",
                           height: "1.4rem",
                         },
                         userButtonOuterIdentifier: {
-                          marginLeft: '-9px', 
+                          marginLeft: "-9px",
                         },
                       },
                     }}

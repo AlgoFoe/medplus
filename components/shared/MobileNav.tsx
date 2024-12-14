@@ -25,10 +25,10 @@ const MobileNav = () => {
     <header className="header flex items-center justify-between p-4 z-10">
       <Link href="/" className="flex items-center gap-2">
         <Image
-          src="/assets/images/logo.png"
+          src="/assets/images/logo-small.png"
           alt="logo"
-          width={180}
-          height={28}
+          width={60}
+          height={51}
         />
       </Link>
       <nav className="flex items-center gap-4">

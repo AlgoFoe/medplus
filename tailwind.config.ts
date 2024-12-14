@@ -72,7 +72,7 @@ module.exports = {
       },
       fontFamily: {
         IBMPlex: ["var(--font-ibm-plex)"],
-        Poppins: ["var(--font-poppins)"],
+        Poppins: ["var(--font-mypoppins)"],
       },
       backgroundImage: {
         "green-gradient": "url('/assets/images/gradient-bg.svg')",
