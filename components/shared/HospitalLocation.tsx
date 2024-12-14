@@ -1,9 +1,9 @@
 import React from "react";
-import {
-  APIProvider,
-  Map,
-  MapCameraChangedEvent,
-} from "@vis.gl/react-google-maps";
+// import {
+//   APIProvider,
+//   Map,
+//   MapCameraChangedEvent,
+// } from "@vis.gl/react-google-maps";
 
 const Key =
   process.env.REACT_APP_MAP_API_KEY ||
