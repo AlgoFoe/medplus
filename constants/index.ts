@@ -7,15 +7,15 @@ export const patientNavLinks :{label: string; route: string; icon: IconName }[] 
     icon: '/FaHome',
   },
   {
-    label: 'Feature 1',
-    route: '/patient/features/feature1',
+    label: 'Health Calendar ',
+    route: '/patient/features/health-calendar',
     icon: '/FaStar',
   },  
   {
-    label: 'Feature 2',
-    route: '/',
+    label: 'Care Finder',
+    route: '/patient/features/care-finder',
     icon: '/FaStar',
-  },
+  },  
   {
     label: 'My Health Vault',
     route: '/patient/features/my-health-vault',
