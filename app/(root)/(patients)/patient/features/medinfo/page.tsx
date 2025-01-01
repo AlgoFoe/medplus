@@ -1,44 +1,40 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Search, Menu, PlusIcon as HousePlus, Pill } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
-import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Search, Menu, Pill } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export default function MedInfo({ children }: LayoutProps) {
+export default function MedInfo() {
   const [medName, setMedName] = useState("");
   const [illness, setIllness] = useState("");
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
   const handleSearch = async () => {
     if (!medName || !illness) {
-      setError("Please enter both medicine name and illness");
+      setError("Please enter both medicine name and illness.");
       return;
     }
-  
+
     setIsLoading(true);
     setError(null);
+
     try {
       const response = await fetch(
         `https://api.fda.gov/drug/event.json?search=patient.drug.medicinalproduct:${medName}+AND+patient.reaction.reactionmeddrapt:${illness}&limit=1`
       );
-  
+
       if (!response.ok) {
-        throw new Error("Failed to fetch data");
+        throw new Error("Failed to fetch data.");
       }
-  
+
       const result = await response.json();
-  
-      // Enrich the drug data with additional info from the API
+
       const enrichedDrugs = result.results[0]?.patient.drug.map((drug: any) => ({
         ...drug,
         additionalInfo: `
@@ -48,7 +44,7 @@ export default function MedInfo({ children }: LayoutProps) {
           Characterization: ${drug.drugcharacterization || "Unknown"}
         `,
       }));
-  
+
       const enrichedData = {
         ...result.results[0],
         patient: {
@@ -56,7 +52,7 @@ export default function MedInfo({ children }: LayoutProps) {
           drug: enrichedDrugs,
         },
       };
-  
+
       setData(enrichedData);
     } catch (err) {
       setError("An error occurred while fetching data. Please try again.");
@@ -65,66 +61,51 @@ export default function MedInfo({ children }: LayoutProps) {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
-      {/* Header Section */}
-      <header className="sticky top-0 z-10 w-full bg-blue-300 bg-opacity-80 backdrop-filter backdrop-blur-lg shadow-lg">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      {/* Header */}
+      <header className="sticky top-0 z-10 bg-blue-300 bg-opacity-80 backdrop-blur-lg shadow-lg">
+        <div className="container mx-auto flex justify-between items-center px-4 py-4">
           <div className="flex items-center gap-3">
             <div className="bg-blue-200 rounded-full p-2">
               <Pill className="text-blue w-8 h-8" aria-hidden="true" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-blue">Med-Info</h1>
-              <p className="text-sm text-gray-500">Search the medicine for information</p>
+              <p className="text-sm text-gray-500">
+                Search for medicine information
+              </p>
             </div>
           </div>
-
-          {/* Responsive Menu */}
-          <div className="lg:hidden flex items-center">
-            <Button variant="ghost" size="icon">
-              <Menu className="h-6 w-6" />
-            </Button>
-          </div>
-
-          {/* Navbar for larger screens */}
-          {/* <nav className="hidden lg:flex items-center space-x-4">
-            <Button variant="ghost">Home</Button>
-            <Button variant="ghost">About</Button>
-            <Button variant="ghost">Contact</Button>
-          </nav> */}
+          <Button variant="ghost" size="icon" className="lg:hidden">
+            <Menu className="h-6 w-6" />
+          </Button>
         </div>
       </header>
 
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <Card className="mb-8 bg-lightblue-50 shadow-lg border-0">
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8 flex-grow">
+        <Card className="mb-8 bg-lightblue-50 shadow-lg">
           <CardContent className="p-6">
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="med-name" className="text-lightblue-400 font-medium">
-                  Enter the medicine name
-                </Label>
+              <div>
+                <Label htmlFor="med-name">Enter the medicine name</Label>
                 <Input
                   id="med-name"
                   type="text"
                   value={medName}
                   onChange={(e) => setMedName(e.target.value)}
-                  className="bg-blue-50 border-lightblue-200 focus:border-blue focus:ring-lightblue-400"
                   placeholder="e.g., Aspirin"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="illness" className="text-lightblue-400 font-medium">
-                  Enter the illness
-                </Label>
+              <div>
+                <Label htmlFor="illness">Enter the illness</Label>
                 <Input
                   id="illness"
                   type="text"
                   value={illness}
                   onChange={(e) => setIllness(e.target.value)}
-                  className="bg-blue-50 border-lightblue-200 focus:border-blue focus:ring-lightblue-400"
                   placeholder="e.g., Headache"
                 />
               </div>
@@ -132,16 +113,11 @@ export default function MedInfo({ children }: LayoutProps) {
             <Button
               onClick={handleSearch}
               disabled={isLoading}
-              className="mt-6 w-50px bg-lightblue-600 hover:bg-lightblue-800 text-white"
+              className="mt-6 w-full bg-lightblue-600 text-white"
             >
-              {isLoading ? (
+              {isLoading ? "Searching..." : (
                 <>
-                  <Skeleton className="h-4 w-4 mr-2 rounded-full animate-spin" />
-                  Searching...
-                </>
-              ) : (
-                <>
-                  <Search className="w-4 h-4 mr-2  text-black" />
+                  <Search className="mr-2" />
                   Search
                 </>
               )}
@@ -149,85 +125,49 @@ export default function MedInfo({ children }: LayoutProps) {
           </CardContent>
         </Card>
 
-        {error && (
-          <div className="mb-8 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-            {error}
-          </div>
-        )}
+        {error && <div className="bg-red-100 p-4 rounded">{error}</div>}
 
-        {isLoading ? (
+        {isLoading && (
           <div className="grid md:grid-cols-2 gap-8">
-            {[1, 2].map((i) => (
-              <Card key={i} className="bg-lightblue-100 shadow-lg border-0">
-                <CardHeader>
-                  <Skeleton className="h-6 w-32" />
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {[1, 2, 3].map((j) => (
-                      <Skeleton key={j} className="h-4 w-full" />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+            {[1, 2].map((_, i) => (
+              <Skeleton key={i} className="h-40 rounded" />
             ))}
           </div>
-        ) : data && (
-          <div className="grid md:grid-cols-2 gap-8">
-          <Card className="bg-lightblue-100 shadow-lg border-0">
-            <CardHeader>
-              <CardTitle className="text-lightblue-400">Reaction</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc pl-5 space-y-4">
-                {data.patient.reaction.map((reaction: any, index: number) => (
-                  <Card key={index} className="transform transition-transform hover:scale-105 hover:shadow-xl rounded-lg bg-white p-4"> 
-                    <div className="text-gray-700 text-lg font-medium">{reaction.reactionmeddrapt}</div>
-                  </Card>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        
-          <Card className='bg-lightblue-100 shadow-lg border-0'>
-      <CardHeader>
-        <CardTitle className="text-lightblue-400">Drug Details</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {data.patient.drug?.map((drug: any, index: number) => (
-            <Card 
-              key={index} 
-              className="transform transition-transform hover:scale-105 hover:shadow-xl rounded-lg bg-white p-4"
-            >
-              <div className="relative group">
-                <span className="font-bold text-gray-500 cursor-pointer text-lg">
-                  {drug.medicinalproduct}
-                </span>
-                <span className="text-gray-500"> - {drug.drugcharacterization}</span>
+        )}
 
-                {/* Modal/Tooltip - Positioned above with higher z-index */}
-                <div className="absolute hidden group-hover:block bg-gray-800 text-white text-sm text-lg rounded-lg shadow-lg w-60 p-4 left-0 z-50 whitespace-pre-line overflow-y-auto max-h-48 bottom-full mb-2">
-                  <p><strong>Additional Info:</strong></p>
-                  <p>{drug.additionalInfo}</p>
-                </div>
-              </div>
+        {data && (
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="bg-lightblue-100">
+              <CardHeader>
+                <CardTitle>Reaction</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc pl-5">
+                  {data.patient.reaction.map((reaction: any, i: number) => (
+                    <li key={i}>{reaction.reactionmeddrapt}</li>
+                  ))}
+                </ul>
+              </CardContent>
             </Card>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-</div>
-        
+
+            <Card className="bg-lightblue-100">
+              <CardHeader>
+                <CardTitle>Drug Details</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {data.patient.drug.map((drug: any, i: number) => (
+                  <div key={i} className="p-4 bg-white rounded shadow">
+                    <h4 className="font-bold">{drug.medicinalproduct}</h4>
+                    <p>{drug.additionalInfo}</p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         )}
       </main>
-
-      {/* <footer className="bg-blue-100 py-4 mt-8">
-        <div className="container mx-auto px-4 text-center text-blue-600">
-          © 2023 Med-Info. All rights reserved.
-        </div>
-      </footer> */}
     </div>
   );
 }
+
 
