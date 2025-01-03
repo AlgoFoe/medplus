@@ -1,5 +1,6 @@
 "use client";
 import { CalendarPlus2 } from "lucide-react";
+
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -19,7 +20,7 @@ const Layout = ({ children }: LayoutProps) => {
               </div>
               <div className="flex flex-col">
                 <h1 className="hidden lg:block text-2xl sm:text-3xl lg:text-3xl font-bold text-blue ml-0 sm:ml-2 leading-6 sm:leading-6">
-                    Doctor's Planner
+                    Doctor&apos;s Planner
                 </h1>
                 <p className="hidden lg:block text-blue-700 text-sm sm:text-base ml-0 sm:ml-2">
                     Your time, your schedule, your way—flexible appointment management designed to fit your dynamic practice.

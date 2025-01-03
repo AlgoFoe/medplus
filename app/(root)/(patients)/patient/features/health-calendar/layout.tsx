@@ -24,7 +24,7 @@ const Layout = ({ children }: LayoutProps) => {
                   Health Calendar
                 </h1>
                 <p className="hidden lg:block text-blue-700 text-sm sm:text-base ml-0 sm:ml-2">
-                  Your next appointment is just a click away—let's make your
+                  Your next appointment is just a click away—let&apos;s make your
                   health a priority!
                 </p>
               </div>

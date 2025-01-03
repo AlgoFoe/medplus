@@ -26,7 +26,7 @@ async function searchHospitals(searchCity: string): Promise<Hospital[]> {
   return response.json();
 }
 
-const page = () => {
+const CareFinderPage = () => {
   const {
     searchCity,
     setSearchCity,
@@ -142,4 +142,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CareFinderPage;

@@ -22,44 +22,39 @@ const AppointmentPage: React.FC = () => {
   const {  refereshStatus, setRefereshStatus } =useGlobalStore();
   const [isLoading, setIsLoading] = useState(false);
 
-  const getupcomingAppointments = useCallback(
-    debounce(async () => {
-      setIsLoading(true);
-      try {
-        const appointmentsResult = await searchAppointments();
-        console.log("Appointment result: ",appointmentsResult);
+  const debouncedGetAppointments = debounce(async () => {
+    setIsLoading(true);
+    try {
+      const appointmentsResult = await searchAppointments();
+      const now = new Date();
+      const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const upcomingAppointmentsResult = appointmentsResult.filter(
+        (appointment: Appointment) => {
+          const appointmentDate = new Date(
+            new Date(appointment.date).getFullYear(),
+            new Date(appointment.date).getMonth(),
+            new Date(appointment.date).getDate()
+          );
+          return appointmentDate >= currentDate;
+        }
+      );
+      setupcomingAppointments(upcomingAppointmentsResult);
+    } catch (error: any) {
+      console.log("Error loading upcoming Appointments or Past Events", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error.message || "There was a problem with your request.",
+        duration: 3000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, 500);
 
-        const now = new Date();
-        const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const upcomingAppointmentsResult = appointmentsResult.filter(
-          (appointment: Appointment) => {
-            console.log("Appointment Date: ",new Date(appointment.date),"\ncurrent date : ", now);
-            const appointmentDate = new Date(
-              new Date(appointment.date).getFullYear(),
-              new Date(appointment.date).getMonth(),
-              new Date(appointment.date).getDate()
-            );
-            return appointmentDate >= currentDate;
-          }
-        );
-
-        setupcomingAppointments(upcomingAppointmentsResult);
-
-      } catch (error:any) {
-        console.log("Error loading upcoming Appointments or Past Events",error);
-        
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: error.message||"There was a problem with your request.",
-          duration: 3000,
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    }, 500),
-    [setupcomingAppointments, upcomingAppointments]
-  );
+  const getupcomingAppointments = useCallback(() => {
+    debouncedGetAppointments();
+  }, []);
 
   useEffect(() => {
     getupcomingAppointments();
